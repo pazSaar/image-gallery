@@ -4,12 +4,13 @@ type FlickrPhotoProps = {
     serverId?: string,
     id?: string,
     secret?: string,
+    title?: string,
 };
 
-const FlickrPhoto: FC<FlickrPhotoProps> = ({serverId, id, secret}) => {
+const FlickrPhoto: FC<FlickrPhotoProps> = ({serverId, id, secret, title}) => {
 
     return(
-        <img alt="img"
+        <img className="w-full h-48 object-cover" alt={title}
             src={`https://live.staticflickr.com/${serverId}/${id}_${secret}.jpg`}/>
     );
 };

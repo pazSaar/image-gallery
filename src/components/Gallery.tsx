@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import FlickrPhoto from "./FlickrPhoto";
+import LoadingAnimation from "./LoadingAnimation";
 
 type GalleryProps = {
     filterText?: string;
@@ -41,12 +42,15 @@ const Gallery: FC<GalleryProps> = ({filterText}) => {
     }, [filterText])
 
     return (
-        isLoading ? <span>images is being loaded</span>
-        : <>
+        isLoading
+        ? <LoadingAnimation />
+        : flickrImages.length > 0
+            ?<div className="grid grid-cols-5 gap-4">
             {flickrImages.map((image: flickerImage, index) =>
-                <FlickrPhoto serverId={image.server} id={image.id} secret={image.secret}/>)
-            };
-        </>
+                <FlickrPhoto serverId={image.server} id={image.id} secret={image.secret} title={image.title}/>)
+            }
+            </div>
+            : <span className="flex items-center	justify-center">No Images Found</span>
     )
 };
 

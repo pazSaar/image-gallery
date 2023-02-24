@@ -16,7 +16,7 @@ const SearchBar: FC<SearchBarProps> = ({onChange}) => {
     }
 
     return (
-        <input type="text" id="searchBar" onChange={handleSearchOnChange} value={searchBarValue} placeholder="Filter images" />
+        <input className="border-2 pl-2 m-1" type="text" id="searchBar" onChange={handleSearchOnChange} value={searchBarValue} placeholder="Filter images" />
     );
 };
 
