@@ -19,19 +19,17 @@ type flickerImage = {
     isfamily?: number
 }
 
-const Gallery: FC<GalleryProps> = ({filterText}) => {
+const Gallery: FC<GalleryProps> = ({filterText = ""}) => {
 
     const apiKey = '15b67c2a8b4288ff1fddf5eb56655cfb';
     const pageNum = 1;
     const [flickrImages, setFlickrImage] = useState([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const debounceFilterText = useDebounce(filterText, 100);
 
     const flickrAPICall = `https://api.flickr.com/services/rest/?method=flickr.photos.search&safe_search=1&format=json&nojsoncallback=18&api_key=${apiKey}&content_type=1&is_getty=1&tags=${debounceFilterText}&page=${pageNum}`
 
     useEffect(()=> {
-
-        if (debounceFilterText) {
             setIsLoading(true)
             fetch(flickrAPICall).then(response => {
                 return response.json()
@@ -45,7 +43,6 @@ const Gallery: FC<GalleryProps> = ({filterText}) => {
                 .finally(() => {
                     setIsLoading(false);
                 })
-        }
     }, [debounceFilterText])
 
     return (
