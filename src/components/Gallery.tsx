@@ -47,7 +47,7 @@ const Gallery: FC<GalleryProps> = ({filterText}) => {
         isLoading
         ? <LoadingAnimation />
         : flickrImages.length > 0
-            ?<div className="grid grid-cols-5 gap-4">
+            ?<div className="grid grid-cols-auto gap-4">
                     {flickrImages.map((image: flickerImage, index) =>
                         <FlickrPhoto key={image.id} serverId={image.server} id={image.id} secret={image.secret} title={image.title}/>)
                     }
