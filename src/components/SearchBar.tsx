@@ -1,20 +1,26 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { RiSave3Fill } from "react-icons/RI";
 import { GiOpenFolder } from "react-icons/GI";
 import Popup from "./Popup";
+import { TagMode } from "../common/types";
 
 type SearchBarProps = {
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
+  setTagMode: (mode: TagMode) => void;
 };
 
-const SearchBar: FC<SearchBarProps> = ({ onChange }) => {
+const SearchBar: FC<SearchBarProps> = ({ onChange, setTagMode }) => {
   const [searchBarValue, setSearchBarValue] = useState<string>("");
-  const [togglePopupView, setTogglePopupView] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [popupUserChoice, SetPopupUserChoice] = useState<string[]>([]);
   const savedFiltersLSKey = "savedFilters";
 
-  const togglePopup = () => {
-    setTogglePopupView(!togglePopupView);
-  };
+  useEffect(() => {
+    if (popupUserChoice.length > 0) {
+      onChange(popupUserChoice.join());
+    }
+  }, [popupUserChoice]);
+
   const handleSaveFilter = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -32,14 +38,28 @@ const SearchBar: FC<SearchBarProps> = ({ onChange }) => {
 
   const handleOpenFilter = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    togglePopup();
+    setOpenPopup(true);
   };
 
-  const handleSearchOnChange = (event: any) => {
+  const handleSearchBarOnChange = (event: any) => {
     event.preventDefault();
     const newValue = event.target.value;
     setSearchBarValue(newValue);
     onChange && onChange(newValue);
+  };
+
+  const handelPopupUserChoiceChange = (userChoice: string[]) => {
+    SetPopupUserChoice(userChoice);
+  };
+
+  const handlePopupOpenChange = (openPopup: boolean) => {
+    setOpenPopup(openPopup);
+  };
+  const removeDuplication = (value: string, index: number, array: string[]) => {
+    return array.indexOf(value) === index;
+  };
+  const removeEmptyString = (value: string) => {
+    return !!value;
   };
 
   return (
@@ -48,7 +68,7 @@ const SearchBar: FC<SearchBarProps> = ({ onChange }) => {
         className="pl-2 m-1 w-52 self-center bg-gray-100 border-2 border-blue-300 rounded"
         type="text"
         id="searchBar"
-        onChange={handleSearchOnChange}
+        onChange={handleSearchBarOnChange}
         value={searchBarValue}
         placeholder="Filter images"
       />
@@ -60,10 +80,21 @@ const SearchBar: FC<SearchBarProps> = ({ onChange }) => {
           <GiOpenFolder size="1.2em" />
         </button>
       </div>
-      {togglePopupView ? (
+      {openPopup ? (
         <Popup
-          togglePopup={togglePopup}
-          listItems={localStorage.getItem(savedFiltersLSKey)?.split(",")}
+          options={
+            localStorage.getItem(savedFiltersLSKey)
+              ? localStorage
+                  .getItem(savedFiltersLSKey)!
+                  .split(",")
+                  .filter(removeEmptyString)
+                  .filter(removeDuplication)
+              : []
+          }
+          setOpen={handlePopupOpenChange}
+          isOpen={openPopup}
+          setUserChoice={handelPopupUserChoiceChange}
+          setParentTagMode={setTagMode}
         />
       ) : null}
     </div>
