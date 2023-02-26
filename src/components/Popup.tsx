@@ -23,7 +23,7 @@ const PopUp: FC<PopUpProps> = ({togglePopup, listItems}) => {
                 <label>
                         <select multiple={true} id="search list">
                         {listItems?.map((item, index) =>
-                            <option value={index}>item</option>
+                            <option value={index}>{item}</option>
                         )}
                         </select>
                 </label>
