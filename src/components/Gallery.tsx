@@ -5,6 +5,7 @@ import useDebounce from "../hooks/useDebounce";
 
 type GalleryProps = {
   filterText?: string;
+  tagMode?: "any" | "all";
 };
 
 type flickerImage = {
@@ -19,14 +20,14 @@ type flickerImage = {
   isfamily?: number;
 };
 
-const Gallery: FC<GalleryProps> = ({ filterText = "" }) => {
+const Gallery: FC<GalleryProps> = ({ filterText = "", tagMode = "any" }) => {
   const apiKey = "15b67c2a8b4288ff1fddf5eb56655cfb";
   const pageNum = 1;
   const [flickrImages, setFlickrImage] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const debounceFilterText = useDebounce(filterText, 500);
 
-  const flickrAPICall = `https://api.flickr.com/services/rest/?method=flickr.photos.search&safe_search=1&format=json&nojsoncallback=18&api_key=${apiKey}&content_type=1&is_getty=1&tags=${debounceFilterText}&page=${pageNum}`;
+  const flickrAPICall = `https://api.flickr.com/services/rest/?method=flickr.photos.search&safe_search=1&format=json&nojsoncallback=18&api_key=${apiKey}&content_type=1&is_getty=1&tags=${debounceFilterText}&tag_mode=${tagMode}&page=${pageNum}`;
 
   useEffect(() => {
     setIsLoading(true);
@@ -62,7 +63,7 @@ const Gallery: FC<GalleryProps> = ({ filterText = "" }) => {
       ))}
     </div>
   ) : (
-    <span className="flex items-center	justify-center">No Images Found</span>
+    <span className="flex items-center justify-center">No Images Found</span>
   );
 };
 
