@@ -25,7 +25,7 @@ const Gallery: FC<GalleryProps> = ({filterText = ""}) => {
     const pageNum = 1;
     const [flickrImages, setFlickrImage] = useState([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const debounceFilterText = useDebounce(filterText, 100);
+    const debounceFilterText = useDebounce(filterText, 500);
 
     const flickrAPICall = `https://api.flickr.com/services/rest/?method=flickr.photos.search&safe_search=1&format=json&nojsoncallback=18&api_key=${apiKey}&content_type=1&is_getty=1&tags=${debounceFilterText}&page=${pageNum}`
 
@@ -50,7 +50,7 @@ const Gallery: FC<GalleryProps> = ({filterText = ""}) => {
         ? <LoadingAnimation />
         : flickrImages.length > 0
             ?<div className="grid grid-cols-auto gap-0">
-                    {flickrImages.map((image: flickerImage, index) =>
+                    {flickrImages.map((image: flickerImage) =>
                         <FlickrPhoto key={image.id} serverId={image.server} id={image.id} secret={image.secret} title={image.title}/>)
                     }
             </div>
