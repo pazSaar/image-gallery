@@ -41,6 +41,7 @@ const MultiSelectList: React.FC<Props> = ({
   const handleSearchButtonClick = () => {
     setUserChoice(selectedOptions);
     setOpen(false);
+    setParentTagMode(tagMode);
   };
   const handleSelectionChange = (event: SelectChangeEvent<string[]>) => {
     setSelectedOptions(event.target.value as string[]);
@@ -51,7 +52,6 @@ const MultiSelectList: React.FC<Props> = ({
     chosenTagMode: "all" | "any"
   ) => {
     setTagMode(chosenTagMode);
-    setParentTagMode(chosenTagMode);
   };
   return (
     <Dialog open={isOpen} onClose={handlePopupClose}>

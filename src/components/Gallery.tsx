@@ -46,7 +46,7 @@ const Gallery: FC<GalleryProps> = ({ filterText = "", tagMode = "any" }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [debounceFilterText]);
+  }, [debounceFilterText, tagMode]);
 
   return isLoading ? (
     <LoadingAnimation />

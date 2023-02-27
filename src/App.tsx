@@ -10,9 +10,16 @@ const App = () => {
   const handleTagModeChange = (mode: TagMode) => {
     setTagMode(mode);
   };
+
+  const handleSearchBarTextChange = (newValue: string) => {
+    setImageFilter(String(newValue));
+  };
   return (
     <div className="text-center mx-10 flex flex-col h-screen">
-      <SearchBar onChange={setImageFilter} setTagMode={handleTagModeChange} />
+      <SearchBar
+        onChange={handleSearchBarTextChange}
+        setTagMode={handleTagModeChange}
+      />
       <Gallery filterText={imageFilter} tagMode={tagMode} />
     </div>
   );
